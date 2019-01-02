@@ -27,7 +27,7 @@ export default [
         path: '/posts',
         name: 'posts',
         icon: 'table',
-        component: './Dashboard/Analysis'
+        component: './Posts/posts.js'
       },
       // users
       {
