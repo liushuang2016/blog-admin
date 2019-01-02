@@ -8,6 +8,7 @@ import HeaderSearch from '../HeaderSearch';
 import HeaderDropdown from '../HeaderDropdown';
 import SelectLang from '../SelectLang';
 import styles from './index.less';
+import { BaseUrl } from '@/utils/constant';
 
 export default class GlobalHeaderRight extends PureComponent {
   getNoticeData() {
@@ -76,7 +77,7 @@ export default class GlobalHeaderRight extends PureComponent {
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
         <Menu.Item key="logout">
           <Icon type="logout" />
-          <FormattedMessage id="menu.account.logout" defaultMessage="logout" />
+          退出登录
         </Menu.Item>
       </Menu>
     );
@@ -94,7 +95,7 @@ export default class GlobalHeaderRight extends PureComponent {
               <Avatar
                 size="small"
                 className={styles.avatar}
-                src={currentUser.avatar}
+                src={`${BaseUrl}/img/site/${currentUser.avatar}`}
                 alt="avatar"
               />
               <span className={styles.name}>{currentUser.name}</span>

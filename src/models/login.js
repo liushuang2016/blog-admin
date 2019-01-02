@@ -4,74 +4,57 @@ import { fakeAccountLogin, getFakeCaptcha } from '@/services/api';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
+import { fetchLogin, fetchLogout } from '@/services/user';
 
 export default {
   namespace: 'login',
 
   state: {
-    status: undefined,
+    status: false,
   },
 
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
-      yield put({
-        type: 'changeLoginStatus',
-        payload: response,
-      });
+      const body = yield call(fetchLogin, payload);
       // Login successfully
-      if (response.status === 'ok') {
+      if (body.status === 200) {
+        yield put({
+          type: 'changeLoginStatus',
+          payload: body,
+        });
         reloadAuthorized();
-        const urlParams = new URL(window.location.href);
-        const params = getPageQuery();
-        let { redirect } = params;
-        if (redirect) {
-          const redirectUrlParams = new URL(redirect);
-          if (redirectUrlParams.origin === urlParams.origin) {
-            redirect = redirect.substr(urlParams.origin.length);
-            if (redirect.match(/^\/.*#/)) {
-              redirect = redirect.substr(redirect.indexOf('#') + 1);
-            }
-          } else {
-            window.location.href = redirect;
-            return;
-          }
-        }
-        yield put(routerRedux.replace(redirect || '/'));
+        yield put(routerRedux.replace('/'));
       }
     },
 
-    *getCaptcha({ payload }, { call }) {
-      yield call(getFakeCaptcha, payload);
-    },
-
-    *logout(_, { put }) {
-      yield put({
-        type: 'changeLoginStatus',
-        payload: {
-          status: false,
-          currentAuthority: 'guest',
-        },
-      });
-      reloadAuthorized();
-      yield put(
-        routerRedux.push({
-          pathname: '/user/login',
-          search: stringify({
-            redirect: window.location.href,
-          }),
-        })
-      );
+    *logout(_, { call, put }) {
+      const body = yield call(fetchLogout)
+      if (body.status === 200) {
+        yield put({
+          type: 'changeLoginStatus',
+          payload: {
+            status: false
+          },
+        });
+        reloadAuthorized();
+        yield put(
+          routerRedux.push('/user/login')
+        );
+      }
     },
   },
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority);
+      if (payload.status === 200) {
+        setAuthority('admin');
+      } else {
+        setAuthority('guest')
+      }
+
       return {
         ...state,
-        status: payload.status,
-        type: payload.type,
+        status: !!payload.status
       };
     },
   },

@@ -1,9 +1,29 @@
 import request from '@/utils/request';
+import { BaseUrl } from '@/utils/constant';
 
-export async function query() {
-  return request('/api/users');
+// 获取用户列表
+export async function fetchUsers(page = 1) {
+  return request(`${BaseUrl}/admin/users/all?p=${page}`);
 }
 
-export async function queryCurrent() {
-  return request('/api/currentUser');
+// 获取当前用户
+export async function fetchCurrentUser() {
+  return request(`${BaseUrl}/admin/users/currentUser`);
+}
+
+// 登录
+export async function fetchLogin(params) {
+  return request(`${BaseUrl}/admin/users/login`, {
+    method: 'POST',
+    body: {
+      ...params
+    }
+  })
+}
+
+// 登出
+export async function fetchLogout() {
+  return request(`${BaseUrl}/admin/users/logout`, {
+    method: 'GET'
+  })
 }
