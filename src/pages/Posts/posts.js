@@ -1,9 +1,9 @@
-import React, { Component, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import { connect } from "dva";
-import { Table, Divider } from "antd";
+import { Table } from "antd";
 import { createActions } from "@/utils/createActions";
 import { PostsTypesGetPosts } from "@/utils/types";
-import style from "./posts.less";
+import style from "@/utils/utils.less";
 
 @connect(({ posts }) => ({
   list: posts.list,
@@ -37,6 +37,7 @@ class PostsPage extends PureComponent {
 
   render() {
     const { list, totalCount } = this.props
+    const { page } = this.state
     const colums = [{
       title: '标题',
       key: 'title',
@@ -60,21 +61,25 @@ class PostsPage extends PureComponent {
     }, {
       title: '操作',
       key: 'action',
-      render: (text, record) => (
+      render: () => (
         <React.Fragment>
-          <a href="#">编辑</a>
+          <a className='oprate' href="#">编辑</a>
           <a href="#">删除</a>
         </React.Fragment>
       )
     }]
 
     return (
-      <div className={style.posts}>
+      <div className={style['tables-box']}>
         <Table
           dataSource={list}
           rowKey='_id'
           columns={colums}
           bordered
+          total={totalCount}
+          defaultCurrent={page}
+          pageSize={12}
+          onChange={this.handleChangePage}
         />
       </div>
     )

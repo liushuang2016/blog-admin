@@ -27,7 +27,20 @@ export default [
         path: '/posts',
         name: 'posts',
         icon: 'table',
-        component: './Posts/posts.js'
+        routes: [
+          {
+            path: '/posts/list',
+            name: 'list',
+            icon: 'table',
+            component: './Posts/posts.js',
+          },
+          {
+            path: '/posts/create',
+            name: 'create',
+            icon: 'form',
+            component: './Posts/create.js',
+          }
+        ]
       },
       // users
       {

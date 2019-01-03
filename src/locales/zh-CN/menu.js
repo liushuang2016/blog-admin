@@ -36,6 +36,8 @@ export default {
   'menu.account.trigger': '触发报错',
   'menu.account.logout': '退出登录',
   'menu.posts': '文章管理',
+  'menu.posts.list': '文章列表',
+  'menu.posts.create': '发布文章',
   'menu.users': '用户管理',
   'menu.tags': '标签管理',
   'menu.createPosts': '创建文章'

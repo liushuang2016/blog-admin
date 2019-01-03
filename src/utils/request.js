@@ -23,11 +23,16 @@ const codeMessage = {
 
 const checkStatus = body => {
   if (body.status >= 200 && body.status < 300) {
+    if (body.msg) {
+      notification.success({
+        message: body.msg
+      })
+    }
     return body;
   }
   const errortext = body.msg || codeMessage[body.status];
   notification.error({
-    message: `请求错误 ${body.status}: ${body.url}`,
+    message: `请求错误 ${body.status}`,
     description: errortext,
   });
   const error = new Error(errortext);
@@ -70,7 +75,6 @@ export default function request(url, option) {
           type: 'login/logout',
         });
       }
-      // 发送错误返回一个空对象
-      return {}
+      return e.body ? e.body : {}
     });
 }
