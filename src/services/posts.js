@@ -15,3 +15,8 @@ export function fetchCreatePosts(params) {
     }
   })
 }
+
+// 获取文章详情
+export function fetchPost(id) {
+  return request(`${BaseUrl}/admin/posts/${id}/edit`)
+}

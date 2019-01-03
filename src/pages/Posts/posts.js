@@ -4,6 +4,7 @@ import { Table } from "antd";
 import { createActions } from "@/utils/createActions";
 import { PostsTypesGetPosts } from "@/utils/types";
 import style from "@/utils/utils.less";
+import { Link } from "dva/router";
 
 @connect(({ posts }) => ({
   list: posts.list,
@@ -61,9 +62,9 @@ class PostsPage extends PureComponent {
     }, {
       title: '操作',
       key: 'action',
-      render: () => (
+      render: (text, record) => (
         <React.Fragment>
-          <a className='oprate' href="#">编辑</a>
+          <Link to={`/posts/create?id=${record._id}`} className='oprate' href="#">编辑</Link>
           <a href="#">删除</a>
         </React.Fragment>
       )
