@@ -20,13 +20,13 @@ export default [
         path: '/dashboard',
         name: 'dashboard',
         icon: 'dashboard',
-        component: './Dashboard/Analysis'
+        component: './Statistics/'
       },
       // posts
       {
         path: '/posts',
         name: 'posts',
-        icon: 'table',
+        icon: 'bars',
         routes: [
           {
             path: '/posts/list',
@@ -46,7 +46,7 @@ export default [
       {
         path: '/users',
         name: 'users',
-        icon: 'table',
+        icon: 'user',
         routes: [
           {
             path: '/users/users',
@@ -56,82 +56,33 @@ export default [
           }
         ]
       },
+      // comments
+      {
+        path: '/comments',
+        name: 'comments',
+        icon: 'profile',
+        routes: [
+          {
+            path: '/comments/comments',
+            name: 'list',
+            icon: 'table',
+            component: './Comments/comments',
+          }
+        ]
+      },
       // tags
       {
         path: '/tags',
         name: 'tags',
-        icon: 'table',
-        component: './Dashboard/Analysis'
-      },
-      // forms
-      {
-        path: '/form',
-        icon: 'form',
-        name: 'form',
+        icon: 'tags',
         routes: [
           {
-            path: '/form/basic-form',
-            name: 'basicform',
-            component: './Forms/BasicForm',
-          },
-          {
-            path: '/form/step-form',
-            name: 'stepform',
-            component: './Forms/StepForm',
-            hideChildrenInMenu: true,
-            routes: [
-              {
-                path: '/form/step-form',
-                redirect: '/form/step-form/info',
-              },
-              {
-                path: '/form/step-form/info',
-                name: 'info',
-                component: './Forms/StepForm/Step1',
-              },
-              {
-                path: '/form/step-form/confirm',
-                name: 'confirm',
-                component: './Forms/StepForm/Step2',
-              },
-              {
-                path: '/form/step-form/result',
-                name: 'result',
-                component: './Forms/StepForm/Step3',
-              },
-            ],
-          },
-          {
-            path: '/form/advanced-form',
-            name: 'advancedform',
-            authority: ['admin'],
-            component: './Forms/AdvancedForm',
-          },
-        ],
-      },
-      // list
-      {
-        path: '/list',
-        icon: 'table',
-        name: 'list',
-        routes: [
-          {
-            path: '/list/card-list',
-            name: 'cardlist',
-            component: './List/CardList',
-          },
-          {
-            path: '/list/search',
-            name: 'searchlist',
-            component: './List/List',
-            routes: [
-              {
-                path: '/list/search',
-                redirect: '/list/search/articles',
-              }
-            ],
-          },
-        ],
+            path: '/tags/tags',
+            name: 'list',
+            icon: 'table',
+            component: './Tags/Tags',
+          }
+        ]
       },
       {
         component: '404',

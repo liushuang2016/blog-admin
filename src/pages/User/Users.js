@@ -95,7 +95,7 @@ class UsersPage extends PureComponent {
         <React.Fragment>
           <Tag
             color='geekblue'
-            onClick={() => this.handleTo(`/user/comments?id=${record._id}`)}
+            onClick={() => this.handleTo(`/comments/comments?uid=${record._id}`)}
           >
             留言管理
           </Tag>

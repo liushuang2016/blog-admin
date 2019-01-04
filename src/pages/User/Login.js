@@ -101,11 +101,6 @@ class LoginPage extends Component {
               onPressEnter={() => this.loginForm.validateFields(this.handleSubmit)}
             />
           </Tab>
-          <div>
-            <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
-              <FormattedMessage id="app.login.remember-me" />
-            </Checkbox>
-          </div>
           <Submit loading={submitting}>
             <FormattedMessage id="app.login.login" />
           </Submit>

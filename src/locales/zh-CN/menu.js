@@ -40,6 +40,9 @@ export default {
   'menu.posts.create': '发布/编辑文章',
   'menu.users': '用户管理',
   'menu.users.list': '用户列表',
+  'menu.comments': '评论管理',
+  'menu.comments.list': '评论列表',
   'menu.tags': '标签管理',
+  'menu.tags.list': '标签列表',
   'menu.createPosts': '创建文章'
 };

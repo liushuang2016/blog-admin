@@ -2,17 +2,18 @@ import React, { PureComponent } from "react";
 import { connect } from "dva";
 import { Table, Tag } from "antd";
 import { createActions } from "@/utils/createActions";
-import { PostsTypesGetPosts } from "@/utils/types";
+import { TagsTypesTags } from "@/utils/types";
 import { routerRedux } from "dva/router";
-import { fetchDeletePost } from "@/services/posts";
 import AdminTable from "@/components/AdminTable";
+import { fetchDelUser } from "@/services/users";
+import { fetchDelTags } from "@/services/tags";
 
-@connect(({ posts, loading }) => ({
-  list: posts.list,
-  totalCount: posts.totalCount,
-  loading: loading.effects[PostsTypesGetPosts]
+@connect(({ tags, loading }) => ({
+  list: tags.list,
+  totalCount: tags.totalCount,
+  loading: loading.effects[TagsTypesTags]
 }))
-class PostsPage extends PureComponent {
+class TagsPage extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -23,20 +24,20 @@ class PostsPage extends PureComponent {
   }
 
   componentDidMount() {
-    this.updatePosts()
+    this.updateTags()
   }
 
-  updatePosts = () => {
+  updateTags = () => {
     const { page } = this.state
     const { dispatch } = this.props
-    dispatch(createActions(PostsTypesGetPosts, page))
+    dispatch(createActions(TagsTypesTags, page))
   }
 
   handleChangePage = (current) => {
     this.setState({
       page: current
     }, () => {
-      this.updatePosts()
+      this.updateTags()
     })
   }
 
@@ -58,9 +59,9 @@ class PostsPage extends PureComponent {
     });
     if (flag) {
       const { deleteId } = this.state
-      const body = await fetchDeletePost(deleteId)
+      const body = await fetchDelTags(deleteId)
       if (body.status === 200) {
-        this.updatePosts()
+        this.updateTags()
       }
     }
   }
@@ -69,46 +70,22 @@ class PostsPage extends PureComponent {
     const { list, totalCount, loading } = this.props
     const { page, visible } = this.state
     const colums = [{
-      title: '标题',
-      key: 'title',
-      dataIndex: 'title'
+      title: '标签名',
+      key: 'tag',
+      dataIndex: 'tag'
     }, {
-      title: '发布时间',
+      title: '创建时间',
       key: 'ct',
       dataIndex: 'ct'
     }, {
-      title: '更新时间',
-      key: 'ut',
-      dataIndex: 'ut'
-    }, {
-      title: '浏览',
-      key: 'pv',
-      dataIndex: 'pv'
-    }, {
-      title: '留言',
-      key: 'commentsCount',
-      dataIndex: 'commentsCount'
-    }, {
-      title: '字数',
-      key: 'contentLength',
-      dataIndex: 'contentLength'
+      title: '文章数',
+      key: 'postCount',
+      dataIndex: 'postCount'
     }, {
       title: '操作',
       key: 'action',
       render: (text, record) => (
         <React.Fragment>
-          <Tag
-            color='geekblue'
-            onClick={() => this.handleTo(`/posts/create?id=${record._id}`)}
-          >
-            编辑
-          </Tag>
-          <Tag
-            color='geekblue'
-            onClick={() => this.handleTo(`/comments/comments?pid=${record._id}`)}
-          >
-            管理评论
-          </Tag>
           <Tag color='red' onClick={() => this.showModal(record._id)}>删除</Tag>
         </React.Fragment>
       )
@@ -116,7 +93,7 @@ class PostsPage extends PureComponent {
 
     return (
       <AdminTable
-        modalText='确认删除文章？'
+        modalText='确认删除标签？'
         modalShow={visible}
         handleClickModel={this.handleClickModel}
       >
@@ -127,7 +104,7 @@ class PostsPage extends PureComponent {
           columns={colums}
           bordered
           pagination={{
-            pageSize: 12,
+            pageSize: 20,
             current: page,
             total: totalCount,
             onChange: this.handleChangePage
@@ -138,4 +115,4 @@ class PostsPage extends PureComponent {
   }
 }
 
-export default PostsPage
+export default TagsPage

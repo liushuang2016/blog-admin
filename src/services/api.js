@@ -1,5 +1,11 @@
 import { stringify } from 'qs';
 import request from '@/utils/request';
+import { BaseUrl } from '@/utils/constant';
+
+// 概览
+export function fetchStatistics() {
+  return request(`${BaseUrl}/admin/statistics`)
+}
 
 export async function queryProjectNotice() {
   return request('/api/project/notice');
