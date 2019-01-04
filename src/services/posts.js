@@ -32,3 +32,8 @@ export function fetchEditPost(params) {
     }
   })
 }
+
+// 删除文章
+export function fetchDeletePost(id) {
+  return request(`${BaseUrl}/admin/posts/${id}/delete`)
+}

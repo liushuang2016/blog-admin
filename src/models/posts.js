@@ -1,4 +1,4 @@
-import { fetchPosts, fetchCreatePosts, fetchEditPost } from "@/services/posts";
+import { fetchPosts, fetchCreatePosts, fetchEditPost, fetchDeletePost } from "@/services/posts";
 import { routerRedux } from "dva/router";
 
 export default {
@@ -39,7 +39,7 @@ export default {
       if (body.status === 200) {
         yield put(routerRedux.push('/posts/list'))
       }
-    }
+    },
   },
   reducers: {
     changeList(state, { payload }) {

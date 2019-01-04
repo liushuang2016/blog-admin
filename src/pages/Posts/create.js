@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Icon, Button, Alert } from "antd";
+import { Form, Input, Icon, Button } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import style from "@/utils/utils.less";
 import { connect } from "dva";
@@ -53,10 +53,6 @@ class CreatePosts extends React.PureComponent {
     });
   }
 
-  renderMessage = content => (
-    <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />
-  );
-
   setFileds = post => {
     this.props.form.setFieldsValue({
       title: post.title,
@@ -67,16 +63,12 @@ class CreatePosts extends React.PureComponent {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { posts, submitting } = this.props
-    const { created, createdMsg } = posts
+    const { submitting } = this.props
     const { id } = this.state
 
     return (
       <div className={style['form-box']}>
         <Form onSubmit={this.handleSubmit}>
-          {
-            !created && createdMsg && this.renderMessage(createdMsg)
-          }
           <Form.Item label={(
             <span>
               <Icon type="edit" style={{ color: 'rgba(0,0,0,.25)', marginRight: '6px' }} />
