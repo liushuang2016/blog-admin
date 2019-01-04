@@ -47,7 +47,14 @@ export default [
         path: '/users',
         name: 'users',
         icon: 'table',
-        component: './Dashboard/Analysis'
+        routes: [
+          {
+            path: '/users/users',
+            name: 'list',
+            icon: 'table',
+            component: './User/Users.js',
+          }
+        ]
       },
       // tags
       {

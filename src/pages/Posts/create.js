@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Icon, Button } from "antd";
+import { Form, Input, Icon, Button, Spin } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import style from "@/utils/utils.less";
 import { connect } from "dva";
@@ -16,7 +16,8 @@ class CreatePosts extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      id: null
+      id: null,
+      loading: true
     }
   }
 
@@ -35,6 +36,9 @@ class CreatePosts extends React.PureComponent {
         const { dispatch } = this.props
         dispatch(routerRedux.push('/posts/list'))
       }
+      this.setState({
+        loading: false
+      })
     }
   }
 
@@ -64,64 +68,67 @@ class CreatePosts extends React.PureComponent {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { submitting } = this.props
-    const { id } = this.state
+    const { id, loading } = this.state
 
     return (
-      <div className={style['form-box']}>
-        <Form onSubmit={this.handleSubmit}>
-          <Form.Item label={(
-            <span>
-              <Icon type="edit" style={{ color: 'rgba(0,0,0,.25)', marginRight: '6px' }} />
-              标题
-            </span>
-          )}
-          >
-            {getFieldDecorator('title', {
-              rules: [{ required: true, message: '请输入标题' }],
-            })(
-              <Input name='title' placeholder="title" />
-            )}
-          </Form.Item>
-          <Form.Item label={(
-            <span>
-              <Icon type="tags" style={{ color: 'rgba(0,0,0,.25)', marginRight: '6px' }} />
-              标签(用空格分割)
-            </span>
-          )}
-          >
-            {getFieldDecorator('tags', {
-              rules: [{ required: true, message: '请输入标签' }],
-            })(
-              <Input name='tags' placeholder="请输入tags，用空格分割" />
-            )}
-          </Form.Item>
-          <Form.Item label={(
-            <span>
-              <Icon type="form" style={{ color: 'rgba(0,0,0,.25)', marginRight: '6px' }} />
-              内容(markdown)
-            </span>
-          )}
-          >
-            {getFieldDecorator('content', {
-              rules: [{ required: true, message: '请输入内容' }],
-            })(
-              <TextArea name='content' rows={15}>Remember me</TextArea>
-            )}
-          </Form.Item>
-          <Form.Item>
-            {
-              id ?
-                <Button loading={submitting} type="primary" htmlType="submit">
-                  更新
-                </Button> :
-                <Button loading={submitting} type="primary" htmlType="submit">
-                  发布
-                </Button>
-            }
+      <Spin spinning={id && loading}>
+        <div className={style['form-box']}>
 
-          </Form.Item>
-        </Form>
-      </div>
+          <Form onSubmit={this.handleSubmit}>
+            <Form.Item label={(
+              <span>
+                <Icon type="edit" style={{ color: 'rgba(0,0,0,.25)', marginRight: '6px' }} />
+                标题
+              </span>
+            )}
+            >
+              {getFieldDecorator('title', {
+                rules: [{ required: true, message: '请输入标题' }],
+              })(
+                <Input name='title' placeholder="title" />
+              )}
+            </Form.Item>
+            <Form.Item label={(
+              <span>
+                <Icon type="tags" style={{ color: 'rgba(0,0,0,.25)', marginRight: '6px' }} />
+                标签(用空格分割)
+              </span>
+            )}
+            >
+              {getFieldDecorator('tags', {
+                rules: [{ required: true, message: '请输入标签' }],
+              })(
+                <Input name='tags' placeholder="请输入tags，用空格分割" />
+              )}
+            </Form.Item>
+            <Form.Item label={(
+              <span>
+                <Icon type="form" style={{ color: 'rgba(0,0,0,.25)', marginRight: '6px' }} />
+                内容(markdown)
+              </span>
+            )}
+            >
+              {getFieldDecorator('content', {
+                rules: [{ required: true, message: '请输入内容' }],
+              })(
+                <TextArea name='content' rows={15}>Remember me</TextArea>
+              )}
+            </Form.Item>
+            <Form.Item>
+              {
+                id ?
+                  <Button loading={submitting} type="primary" htmlType="submit">
+                    更新
+                  </Button> :
+                  <Button loading={submitting} type="primary" htmlType="submit">
+                    发布
+                  </Button>
+              }
+
+            </Form.Item>
+          </Form>
+        </div>
+      </Spin>
     )
   }
 }
