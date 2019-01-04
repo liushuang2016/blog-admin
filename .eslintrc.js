@@ -36,7 +36,9 @@ module.exports = {
     'react/no-unescaped-entities': 0,
     'react/destructuring-assignment': 0,
     'no-console': 0,
-    'no-underscore-dangle': 0
+    'no-underscore-dangle': 0,
+    'react/jsx-boolean-value': 0,
+    'no-sequences': 0
   },
   settings: {
     polyfills: ['fetch', 'promises', 'url'],

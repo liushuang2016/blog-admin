@@ -20,3 +20,15 @@ export function fetchCreatePosts(params) {
 export function fetchPost(id) {
   return request(`${BaseUrl}/admin/posts/${id}/edit`)
 }
+
+// 编辑文章
+export function fetchEditPost(params) {
+  return request(`${BaseUrl}/admin/posts/${params.id}/edit`, {
+    method: 'POST',
+    body: {
+      title: params.title,
+      tags: params.tags,
+      content: params.content
+    }
+  })
+}

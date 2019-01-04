@@ -4,19 +4,19 @@ import TextArea from "antd/lib/input/TextArea";
 import style from "@/utils/utils.less";
 import { connect } from "dva";
 import { createActions } from "@/utils/createActions";
-import { PostsTypesCreate, PostsTypesPost } from "@/utils/types";
+import { PostsTypesCreate, PostsTypesEdit } from "@/utils/types";
 import { fetchPost } from "@/services/posts";
 import { routerRedux } from "dva/router";
 
 @connect(({ posts, loading }) => ({
   posts,
-  submitting: loading.effects[PostsTypesCreate]
+  submitting: loading.effects[PostsTypesCreate, PostsTypesEdit]
 }))
 class CreatePosts extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      change: false
+      id: null
     }
   }
 
@@ -28,7 +28,7 @@ class CreatePosts extends React.PureComponent {
       const body = await fetchPost(query.id)
       if (body.status === 200) {
         this.setState({
-          change: true
+          id: query.id
         })
         this.setFileds(body.data)
       } else {
@@ -39,11 +39,16 @@ class CreatePosts extends React.PureComponent {
   }
 
   handleSubmit = (e) => {
+    const { id } = this.state
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const { dispatch } = this.props
-        dispatch(createActions(PostsTypesCreate, values))
+        if (!id) {
+          dispatch(createActions(PostsTypesCreate, values))
+        } else {
+          dispatch(createActions(PostsTypesEdit, { id, ...values }))
+        }
       }
     });
   }
@@ -64,7 +69,7 @@ class CreatePosts extends React.PureComponent {
     const { getFieldDecorator } = this.props.form;
     const { posts, submitting } = this.props
     const { created, createdMsg } = posts
-    const { change } = this.state
+    const { id } = this.state
 
     return (
       <div className={style['form-box']}>
@@ -113,7 +118,7 @@ class CreatePosts extends React.PureComponent {
           </Form.Item>
           <Form.Item>
             {
-              change ?
+              id ?
                 <Button loading={submitting} type="primary" htmlType="submit">
                   更新
                 </Button> :

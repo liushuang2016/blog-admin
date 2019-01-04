@@ -1,4 +1,4 @@
-import { fetchPosts, fetchCreatePosts } from "@/services/posts";
+import { fetchPosts, fetchCreatePosts, fetchEditPost } from "@/services/posts";
 import { routerRedux } from "dva/router";
 
 export default {
@@ -26,6 +26,16 @@ export default {
         payload: body
       })
       // 创建成功路由跳转
+      if (body.status === 200) {
+        yield put(routerRedux.push('/posts/list'))
+      }
+    },
+    *editPosts({ payload }, { call, put }) {
+      const body = yield call(fetchEditPost, payload)
+      yield put({
+        type: 'changeCreated',
+        payload: body
+      })
       if (body.status === 200) {
         yield put(routerRedux.push('/posts/list'))
       }

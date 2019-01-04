@@ -6,9 +6,10 @@ import { PostsTypesGetPosts } from "@/utils/types";
 import style from "@/utils/utils.less";
 import { Link } from "dva/router";
 
-@connect(({ posts }) => ({
+@connect(({ posts, loading }) => ({
   list: posts.list,
-  totalCount: posts.totalCount
+  totalCount: posts.totalCount,
+  loading: loading.effects[PostsTypesGetPosts]
 }))
 class PostsPage extends PureComponent {
   constructor(props) {
@@ -25,19 +26,20 @@ class PostsPage extends PureComponent {
   updatePosts = () => {
     const { page } = this.state
     const { dispatch } = this.props
-    // console.log(createActions(PostsGetPosts, page))
     dispatch(createActions(PostsTypesGetPosts, page))
   }
 
-  handleChangePage = (page) => {
+  handleChangePage = (current) => {
+    console.log(current)
     this.setState({
-      page
+      page: current
+    }, () => {
+      this.updatePosts()
     })
-    this.updatePosts()
   }
 
   render() {
-    const { list, totalCount } = this.props
+    const { list, totalCount, loading } = this.props
     const { page } = this.state
     const colums = [{
       title: '标题',
@@ -73,14 +75,17 @@ class PostsPage extends PureComponent {
     return (
       <div className={style['tables-box']}>
         <Table
+          loading={loading}
           dataSource={list}
           rowKey='_id'
           columns={colums}
           bordered
-          total={totalCount}
-          defaultCurrent={page}
-          pageSize={12}
-          onChange={this.handleChangePage}
+          pagination={{
+            pageSize: 12,
+            current: page,
+            total: totalCount,
+            onChange: this.handleChangePage
+          }}
         />
       </div>
     )
