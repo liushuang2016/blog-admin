@@ -1,2 +1,2 @@
 export const SiteTile = 'LiuShuang\'s Blog'
-export const BaseUrl = 'http://localhost:3000'
+export const BaseUrl = '127.0.0.1:3000'
