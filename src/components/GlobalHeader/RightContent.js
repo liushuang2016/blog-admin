@@ -8,7 +8,7 @@ import HeaderSearch from '../HeaderSearch';
 import HeaderDropdown from '../HeaderDropdown';
 import SelectLang from '../SelectLang';
 import styles from './index.less';
-import { BaseUrl } from '@/utils/constant';
+import { BaseUrl, cdnUrl } from '@/utils/constant';
 
 export default class GlobalHeaderRight extends PureComponent {
   getNoticeData() {
@@ -95,7 +95,7 @@ export default class GlobalHeaderRight extends PureComponent {
               <Avatar
                 size="small"
                 className={styles.avatar}
-                src={`${BaseUrl}/img/site/${currentUser.avatar}`}
+                src={`${cdnUrl}/img/site/${currentUser.avatar}`}
                 alt="avatar"
               />
               <span className={styles.name}>{currentUser.name}</span>
